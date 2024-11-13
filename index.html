@@ -1,13 +1,3 @@
-<?php
-// Check if the form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo '<pre>';  // Formats the output in a readable way
-    print_r($_POST);  // Prints all POST data
-    echo '</pre>';
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -192,9 +182,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             };
 
             const handleSubmit = (e) => {
-                e.preventDefault();
-                // alert('Form submitted');
+                e.preventDefault();  // Prevent normal form submission
+
+                // Collect form data
+                const formData = new FormData(e.target);
+
+                // Send the form data using fetch (AJAX)
+                fetch('submit.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())  // Process the response (you can use JSON if the server sends JSON)
+                .then(data => {
+                    // Process the response data (e.g., display a success message)
+                    alert('Form submitted successfully!');
+                    console.log(data);  // Log or handle the server response
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             };
+
 
             return (
                 <div className="container my-4">
